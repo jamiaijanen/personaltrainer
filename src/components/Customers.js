@@ -53,6 +53,22 @@ function Customers() {
         .catch(err => console.error(err))
     }
 
+    const deleteCustomer = url => {
+        if (window.confirm('Are you sure?')) {
+            fetch(url, { method: 'DELETE'})
+            .then(res => {
+                if(res.ok) {
+                    fetchCustomers();
+                    setMsg("Customer deleted");
+                    setOpen(true);
+                }
+                else
+                    alert('Delete didnt happen')
+            })
+            .catch(err => console.error(err))
+        }
+    }
+
     const rows = [
         {field: 'firstname', sortable: true, filter: true},
         {field: 'lastname', sortable: true, filter: true},
@@ -68,6 +84,14 @@ function Customers() {
             width: 120,
             field: '_links.self.href',
             cellRendererFramework: params => <EditCustomer editCustomer={editCustomer} customer={params} />
+        },
+        {
+            headerName: '',
+            sortable: '',
+            filter: false,
+            width: 120,
+            field: '_links.self.href',
+            cellRendererFramework: params => <Button size="small" color="error" onClick={() => deleteCustomer(params.data.links[0].href)}>Delete</Button>    
         }
     ]
 
