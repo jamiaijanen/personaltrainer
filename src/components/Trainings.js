@@ -9,7 +9,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-material.css'
 
 function Trainings() {
-    const [trainings, setTrainings] = useState([{date: "", activity: "", duration: "", firstname: "", lastname: ""}])
+    const [trainings, setTrainings] = useState([])
     const [open, setOpen] = useState(false);
     const [msg, setMsg] = useState('');
 
@@ -22,16 +22,17 @@ function Trainings() {
     }, []);
 
     const fetchTrainings = () => {
-        fetch('https://customerrest.herokuapp.com/gettrainings')
+        fetch('https://customerrest.herokuapp.com/api/trainings')
         .then(response => response.json())
         .then(responseData => {
-            setTrainings(responseData);
+            setTrainings(responseData.content);
         })
         .catch(err => console.log(err))
     }
 
     const addTraining = training => {
-        fetch('https://customerrest.herokuapp.com/gettrainings',
+        fetch('https://customerrest.herokuapp.com/api/trainings',
+        console.log(training),
         {
             method: 'POST',
             headers: {'Content-type' : 'application/json'},
@@ -60,17 +61,16 @@ function Trainings() {
 
     const rows = [
         {field: 'date', sortable: true, filter: true},
-        {field: 'activity', sortable: true, filter: true},
         {field: 'duration', sortable: true, filter: true},
-        {field: 'customer.firstname', headerName: "Firstname", sortable: true, filter: true},
-        {field: 'customer.lastname', headerName: "Lastname", sortable: true, filter: true},
+        {field: 'activity', sortable: true, filter: true},
         {
             headerName: '',
             sortable: '',
             filter: false,
             width: 120,
             field: '_links.self.href',
-            cellRendererFramework: params => <Button size="small" color="error" onClick={() => deleteTraining(params[0])}>Delete</Button>
+            cellRendererFramework: params => <Button size="small" color="error" onClick={() => {
+                deleteTraining(params.data.links[0].href)}}>Delete</Button>
         }
     ]
 

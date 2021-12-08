@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 function AddTraining(props) {
     const [open, setOpen] = React.useState(false);
-    const [training, setTraining] = React.useState({date: '', activity: '', duration: '', firstname: '', lastname: ''});
+    const [training, setTraining] = React.useState({date: '', activity: '', duration: '', customer: ''});
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -46,15 +46,6 @@ function AddTraining(props) {
                     />
                     <TextField
                         margin="dense"
-                        name="activity"
-                        value={training.activity}
-                        onChange={inputChanged}
-                        label="Activity"
-                        fullWidth
-                        variant="standard"
-                    />
-                    <TextField
-                        margin="dense"
                         name="duration"
                         value={training.duration}
                         onChange={inputChanged}
@@ -64,19 +55,19 @@ function AddTraining(props) {
                     />
                     <TextField
                         margin="dense"
-                        name="firstname"
-                        value={training.firstname}
+                        name="activity"
+                        value={training.activity}
                         onChange={inputChanged}
-                        label="Firstname"
+                        label="Activity"
                         fullWidth
                         variant="standard"
                     />
                     <TextField
                         margin="dense"
-                        name="lastname"
-                        value={training.lastname}
+                        name="customer"
+                        value={training.customer}
                         onChange={inputChanged}
-                        label="Lastname"
+                        label="Customer"
                         fullWidth
                         variant="standard"
                     />

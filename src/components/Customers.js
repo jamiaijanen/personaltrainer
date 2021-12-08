@@ -91,7 +91,8 @@ function Customers() {
             filter: false,
             width: 120,
             field: '_links.self.href',
-            cellRendererFramework: params => <Button size="small" color="error" onClick={() => deleteCustomer(params.data.links[0].href)}>Delete</Button>    
+            cellRendererFramework: params => <Button size="small" color="error" onClick={() => {
+                deleteCustomer(params.data.links[0].href)}}>Delete</Button>    
         }
     ]
 
