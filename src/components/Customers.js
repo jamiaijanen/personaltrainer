@@ -11,7 +11,7 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css'
 function Customers() {
     const [customers, setCustomers] = useState([]);
     const [open, setOpen] = useState(false);
-    const [msg, setMsg] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleClose = () => {
         setOpen(false);
@@ -46,7 +46,7 @@ function Customers() {
             body: JSON.stringify(updatedCustomer)
         })
         .then(_=> {
-            setMsg("Customer updated");
+            setMessage("Customer updated");
             setOpen(true);
             fetchCustomers()
         })
@@ -59,7 +59,7 @@ function Customers() {
             .then(res => {
                 if(res.ok) {
                     fetchCustomers();
-                    setMsg("Customer deleted");
+                    setMessage("Customer deleted");
                     setOpen(true);
                 }
                 else
@@ -91,8 +91,7 @@ function Customers() {
             filter: false,
             width: 120,
             field: '_links.self.href',
-            cellRendererFramework: params => <Button size="small" color="error" onClick={() => {
-                deleteCustomer(params.data.links[0].href)}}>Delete</Button>    
+            cellRendererFramework: params => <Button size="small" color="error" onClick={() => deleteCustomer(params.data.links[0].href)}>Delete</Button>    
         }
     ]
 
@@ -110,7 +109,7 @@ function Customers() {
             </div>
             <Snackbar
                 open={open}
-                message={msg}
+                message={message}
                 autoHideDuration={3000}
                 onClose={handleClose}
             />

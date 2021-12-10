@@ -3,15 +3,15 @@ import { AgGridReact } from 'ag-grid-react';
 import { Snackbar } from '@mui/material';
 import AddTraining from './AddTraining';
 import Button from '@mui/material/Button';
-import Moment from 'react-moment';
+import dayjs from 'dayjs';
 
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-material.css'
 
 function Trainings() {
-    const [trainings, setTrainings] = useState([])
+    const [trainings, setTrainings] = useState([{date: '', activity: '', duration: ''}])
     const [open, setOpen] = useState(false);
-    const [msg, setMsg] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleClose = () => {
         setOpen(false);
@@ -24,15 +24,12 @@ function Trainings() {
     const fetchTrainings = () => {
         fetch('https://customerrest.herokuapp.com/api/trainings')
         .then(response => response.json())
-        .then(responseData => {
-            setTrainings(responseData.content);
-        })
+        .then(responseData => setTrainings(responseData.content))
         .catch(err => console.log(err))
     }
 
     const addTraining = training => {
         fetch('https://customerrest.herokuapp.com/api/trainings',
-        console.log(training),
         {
             method: 'POST',
             headers: {'Content-type' : 'application/json'},
@@ -46,10 +43,9 @@ function Trainings() {
         if (window.confirm('Are you sure?')) {
             fetch(url, { method: 'DELETE'})
             .then(response => {
-                console.log(url)
                 if(response.ok) {
                     fetchTrainings();
-                    setMsg("Training deleted");
+                    setMessage("Training deleted");
                     setOpen(true);
                 }
                 else
@@ -60,7 +56,7 @@ function Trainings() {
     }
 
     const rows = [
-        {field: 'date', sortable: true, filter: true},
+        {field: 'date', sortable: true, filter: true, valueFormatter: params => dayjs(params.value).format('DD.MM.YYYY hh:mm')},
         {field: 'duration', sortable: true, filter: true},
         {field: 'activity', sortable: true, filter: true},
         {
@@ -88,7 +84,7 @@ function Trainings() {
             </div>
             <Snackbar
                 open={open}
-                message={msg}
+                message={message}
                 autoHideDuration={3000}
                 onClose={handleClose}
             />

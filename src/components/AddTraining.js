@@ -5,9 +5,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import dayjs from 'dayjs';
+import DateFnsUtils from '@date-io/date-fns';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 
 function AddTraining(props) {
     const [open, setOpen] = React.useState(false);
+    const [time, setTime] = React.useState()
     const [training, setTraining] = React.useState({date: '', activity: '', duration: '', customer: ''});
 
     const handleClickOpen = () => {
@@ -27,6 +32,12 @@ function AddTraining(props) {
         setTraining({...training, [event.target.name]: event.target.value})
     }
 
+    const timeChanged = time => {
+        const date = dayjs(time).toISOString()
+        setTime(date)
+        setTraining({...training, date})
+    }
+
     return(
         <div>
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -35,15 +46,15 @@ function AddTraining(props) {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>New Training</DialogTitle>
                 <DialogContent>
-                    <TextField
-                        margin="dense"
-                        name="date"
-                        value={training.date}
-                        onChange={inputChanged}
-                        label="Date"
-                        fullWidth
-                        variant="standard"
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DateTimePicker 
+                            value={time} 
+                            onChange={timeChanged} 
+                            margin="dense"
+                            fullWidth
+                            variant="standard"
+                            />
+                    </MuiPickersUtilsProvider>
                     <TextField
                         margin="dense"
                         name="duration"
