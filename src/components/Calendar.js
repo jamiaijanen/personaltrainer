@@ -5,11 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from "dayjs";
 
 function Calendar() {
-    const [date, setDate] = useState()
-    const [duration, setDuration] = useState()
-    const [activity, setActivity] = useState()
-    const [customer, setCustomer] = useState()
-    const [time, setTime] = useState()
+    const [trainings, setDate] = useState([{date: '', activity: '', duration: '', customer: ''}])
 
     useEffect(() => {
         fetchTrainings();
@@ -19,30 +15,30 @@ function Calendar() {
         fetch('https://customerrest.herokuapp.com/gettrainings')
         .then(response => response.json())
         .then(responseData => {
-            console.log(responseData[0].date)
-                setDate(dayjs(responseData[1].date).format('hh:mm'))
-                setTime(dayjs(responseData[1].date).format("YYYY-MM-DD"))
-                setDuration(responseData[1].duration)
-                setActivity(responseData[1].activity)
-                setCustomer(responseData[1].customer.firstname + " " + responseData[1].customer.lastname)
-
-                console.log(dayjs(responseData[1].date).format("YYYY-MM-DD"))
+            setDate(responseData)
         })
         .catch(err => console.log(err))
     }
 
-    const events = [
-        {title: date + " / " + duration + "min" + " / " + activity + " / " + customer,
-        start: time
-        }]
+    const reformattedData = trainings.map((data) => {
+        return {
+            title: data.activity + "/" + data.customer.firstname + " " + data.customer.lastname + "/" + data.duration + "min",
+            start: dayjs(data.date).format('YYYY-MM-DD hh:mm')
+        }
+    })
 
     return(
         <div>
             <FullCalendar
                 plugins={[dayGridPlugin]}
-                initialView="dayGridMonth"
-                events={events}
+                initialView="dayGridWeek"
+                events={reformattedData}
                 height={600}
+                headerToolbar={{
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today,dayGridMonth,dayGridDay,dayGridWeek'
+                }}
             />
         </div>
     )
