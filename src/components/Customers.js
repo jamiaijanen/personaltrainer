@@ -105,7 +105,7 @@ function Customers() {
                     filename={"Customers.csv"}
                     className="btn btn-primary"
                     target="_blank"
-                    >Export users to csv
+                    >Export customers to csv
                 </CSVLink>
             </Button>
             <div className="ag-theme-material" style={{height: 600, width: '90%', textAlign: 'left', marginTop:20}}>
