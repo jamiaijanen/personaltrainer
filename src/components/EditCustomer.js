@@ -38,7 +38,7 @@ function EditCustomer(props) {
 
     return(
         <div>
-            <Button variant="small" onClick={handleClickOpen}>
+            <Button variant="outlined" onClick={handleClickOpen}>
                 Edit
             </Button>
             <Dialog open={open} onClose={handleClose}>
