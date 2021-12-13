@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { Snackbar } from '@mui/material';
-import AddTraining from './AddTraining';
 import Button from '@mui/material/Button';
 import dayjs from 'dayjs';
 
@@ -26,17 +25,6 @@ function Trainings() {
         .then(response => response.json())
         .then(responseData => setTrainings(responseData.content))
         .catch(err => console.log(err))
-    }
-
-    const addTraining = training => {
-        fetch('https://customerrest.herokuapp.com/api/trainings',
-        {
-            method: 'POST',
-            headers: {'Content-type' : 'application/json'},
-            body: JSON.stringify(training)
-        })
-        .then(_=> fetchTrainings())
-        .catch(err => console.error(err))
     }
 
     const deleteTraining = url => {
@@ -72,7 +60,6 @@ function Trainings() {
 
     return(
         <div>
-            <AddTraining addTraining={addTraining} />
             <div className="ag-theme-material" style={{height: 600, width: '90%', textAlign: 'left', marginTop:20}}>
                 <AgGridReact
                     rowData={trainings}

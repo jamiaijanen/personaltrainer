@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { Snackbar } from '@mui/material';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
+import AddTraining from './AddTraining';
 import { CSVLink } from "react-csv";
 
 import 'ag-grid-community/dist/styles/ag-grid.css'
@@ -37,6 +38,17 @@ function Customers() {
             body: JSON.stringify(customer)
         })
         .then(_=> fetchCustomers())
+        .catch(err => console.error(err))
+    }
+
+    
+    const addTraining = training => {
+        fetch('https://customerrest.herokuapp.com/api/trainings',
+        {
+            method: 'POST',
+            headers: {'Content-type' : 'application/json'},
+            body: JSON.stringify(training)
+        })
         .catch(err => console.error(err))
     }
 
@@ -78,6 +90,14 @@ function Customers() {
         {field: 'city', sortable: true, filter: true},
         {field: 'email', sortable: true, filter: true},
         {field: 'phone', sortable: true, filter: true},
+        {
+            headerName: '',
+            sortable: '',
+            filter: false,
+            width: 200,
+            field: '_links.self.href',
+            cellRendererFramework: params => <AddTraining addTraining={addTraining} customer={params} />
+        },
         {
             headerName: '',
             sortable: '',

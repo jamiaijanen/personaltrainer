@@ -13,7 +13,7 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 function AddTraining(props) {
     const [open, setOpen] = React.useState(false);
     const [time, setTime] = React.useState()
-    const [training, setTraining] = React.useState({date: '', activity: '', duration: '', customer: ''});
+    const [training, setTraining] = React.useState({date: '', activity: '', duration: '', customer: props.customer.data.links[0].href});
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -25,6 +25,7 @@ function AddTraining(props) {
 
     const handleSave = () => {
         props.addTraining(training);
+        console.log(training)
         handleClose();
     }
 
@@ -41,7 +42,7 @@ function AddTraining(props) {
     return(
         <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-                New Training
+                Add Training
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>New Training</DialogTitle>
@@ -70,15 +71,6 @@ function AddTraining(props) {
                         value={training.activity}
                         onChange={inputChanged}
                         label="Activity"
-                        fullWidth
-                        variant="standard"
-                    />
-                    <TextField
-                        margin="dense"
-                        name="customer"
-                        value={training.customer}
-                        onChange={inputChanged}
-                        label="Customer"
                         fullWidth
                         variant="standard"
                     />
